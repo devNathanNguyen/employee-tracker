@@ -1,11 +1,11 @@
-import inquirer from 'inquirer';
-import queries from './db/queries.js';
-import cTable from 'console.table';
+import enquirer from "enquirer";
+import queries from "./db/queries.js";
+import cTable from "console.table";
 
 const mainMenu = async () => {
-  const { action } = await inquirer.prompt({
-    type: "list",
-    name: "action",
+  const { selectedAction } = await enquirer.prompt({
+    type: "select",
+    name: "selectedAction",
     message: "What would you like to do?",
     choices: [
       "View all departments",
@@ -19,7 +19,7 @@ const mainMenu = async () => {
     ],
   });
 
-  switch (action) {
+  switch (selectedAction) {
     case "View all departments":
       const departments = await queries.getAllDepartments();
       console.table(departments[0]);
@@ -36,7 +36,7 @@ const mainMenu = async () => {
       mainMenu();
       break;
     case "Add a department":
-      const departmentData = await inquirer.prompt([
+      const departmentData = await enquirer.prompt([
         {
           type: "input",
           name: "name",
@@ -56,7 +56,7 @@ const mainMenu = async () => {
         })
       );
 
-      const roleData = await inquirer.prompt([
+      const roleData = await enquirer.prompt([
         {
           type: "input",
           name: "title",
@@ -68,7 +68,7 @@ const mainMenu = async () => {
           message: "Enter the role salary:",
         },
         {
-          type: "list",
+          type: "select",
           name: "department_id",
           message: "Select the department for the role:",
           choices: departmentChoices,
@@ -92,7 +92,7 @@ const mainMenu = async () => {
       }));
       managerChoices.unshift({ name: "None", value: null });
 
-      const employeeData = await inquirer.prompt([
+      const employeeData = await enquirer.prompt([
         {
           type: "input",
           name: "first_name",
@@ -104,13 +104,13 @@ const mainMenu = async () => {
           message: "Enter the employee last name:",
         },
         {
-          type: "list",
+          type: "select",
           name: "role_id",
           message: "Select the employee role:",
           choices: roleChoices,
         },
         {
-          type: "list",
+          type: "select",
           name: "manager_id",
           message: "Select the employee manager:",
           choices: managerChoices,
@@ -129,15 +129,15 @@ const mainMenu = async () => {
         value: employee.id,
       }));
 
-      const { employeeId, newRoleId } = await inquirer.prompt([
+      const { employeeId, newRoleId } = await enquirer.prompt([
         {
-          type: "list",
+          type: "select",
           name: "employeeId",
           message: "Select the employee to update:",
           choices: employeeChoices,
         },
         {
-          type: "list",
+          type: "select",
           name: "newRoleId",
           message: "Select the new role:",
           choices: roleChoices,
