@@ -1,4 +1,5 @@
-const connection = require("./db");
+import mysql from 'mysql2/promise';
+import connection from './db.js';
 
 const getAllDepartments = () => {
   return connection.promise().query("SELECT * FROM department");
@@ -35,7 +36,7 @@ const updateEmployeeRole = (employeeId, roleId) => {
     ]);
 };
 
-module.exports = {
+export default {
   getAllDepartments,
   getAllRoles,
   getAllEmployees,
